@@ -10,6 +10,6 @@ namespace PocketDex.Models
         public int PokemonId { get; set; }
 
         public virtual Pokemon Pokemon { get; set; }
-        public virtual Type Type { get; set; }
+        public virtual Types Types { get; set; }
     }
 }

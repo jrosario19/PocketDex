@@ -6,9 +6,9 @@ namespace PocketDex.Models
 {
     public partial class PokeDexContext : DbContext
     {
-        public PokeDexContext()
-        {
-        }
+        //public PokeDexContext()
+        //{
+        //}
 
         public PokeDexContext(DbContextOptions<PokeDexContext> options)
             : base(options)
@@ -20,7 +20,7 @@ namespace PocketDex.Models
         public virtual DbSet<PokemonAttack> PokemonAttack { get; set; }
         public virtual DbSet<PokemonType> PokemonType { get; set; }
         public virtual DbSet<Region> Region { get; set; }
-        public virtual DbSet<Type> Type { get; set; }
+        public virtual DbSet<Types> Types { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -102,7 +102,7 @@ namespace PocketDex.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PokemonType_Pokemon");
 
-                entity.HasOne(d => d.Type)
+                entity.HasOne(d => d.Types)
                     .WithMany(p => p.PokemonType)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
@@ -124,7 +124,7 @@ namespace PocketDex.Models
                     .HasMaxLength(50);
             });
 
-            modelBuilder.Entity<Type>(entity =>
+            modelBuilder.Entity<Types>(entity =>
             {
                 entity.Property(e => e.Name)
                     .IsRequired()

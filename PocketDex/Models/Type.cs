@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace PocketDex.Models
 {
-    public partial class Type
+    public partial class Types
     {
-        public Type()
+        public Types()
         {
             PokemonType = new HashSet<PokemonType>();
         }
