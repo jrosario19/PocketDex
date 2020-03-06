@@ -138,9 +138,21 @@ namespace PocketDex.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var @type = await _context.Types.FindAsync(id);
-            _context.Types.Remove(@type);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Types.Remove(@type);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                ViewBag.ErrorTitle = $"{@type.Name} Tipo esta en uso";
+                ViewBag.ErrorMessage = $"{@type.Name} Tipo no puede ser eliminado puesto que esta vinculado con otras entidades" +
+                    $". Si quiere eliminarlo favor elimine los elementos relacionados con este Tipo y luego trate de eliminarlo" +
+                    $".";
+                return View("Error1");
+            }
+
         }
 
         private bool TypeExists(int id)

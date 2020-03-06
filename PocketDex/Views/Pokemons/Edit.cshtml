@@ -1,4 +1,4 @@
-﻿@model PocketDex.Models.Pokemon
+﻿@model PocketDex.ViewModels.PokemonEditViewModel
 
 @{
 //Layout = null;
@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Edit</title>
+    <title>Editar</title>
 </head>
 <body>
 
@@ -17,7 +17,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form enctype="multipart/form-data" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -30,10 +30,18 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            @*<div class="form-group">
+            <label asp-for="Gender" class="control-label"></label>
+            <input asp-for="Gender" class="form-control" />
+            <span asp-validation-for="Gender" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="Gender" class="control-label"></label>
-                <input asp-for="Gender" class="form-control" />
-                <span asp-validation-for="Gender" class="text-danger"></span>
+                <select asp-for="Gender" class="form-control" asp-items="ViewBag.Gender">
+                    @*<option value="" selected>Favor seleccionar</option>
+                <option>Femenino</option>
+                <option>Masculino</option>*@
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Height" class="control-label"></label>
@@ -50,20 +58,48 @@
                 <select asp-for="RegionId" class="form-control" asp-items="ViewBag.RegionId"></select>
                 <span asp-validation-for="RegionId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PhotoPath" class="control-label"></label>
-                <input asp-for="PhotoPath" class="form-control" />
-                <span asp-validation-for="PhotoPath" class="text-danger"></span>
+            <div class="form-group" hidden>
+                <label asp-for="PhotoString" class="control-label"></label>
+                <input asp-for="PhotoString" class="form-control" />
+                <span asp-validation-for="PhotoString" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <label asp-for="PhotoPath" class="col-sm-2 col-form-label"></label>
+                <div class="col-sm-10">
+                    <div class="custom-file">
+                        <input asp-for="PhotoPath" class="form-control custom-file-input" />
+                        <label class="custom-file-label">Choose File</label>
+                    </div>
+                </div>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <label asp-for="TypesIds" class="control-label"></label>
+                <select asp-for="TypesIds" class="form-control" asp-items="ViewBag.TypesId" multiple></select>
             </div>
+            <div class="form-group">
+                <label asp-for="AttackIds" class="control-label"></label>
+                <select asp-for="AttackIds" class="form-control" asp-items="ViewBag.AttackId" multiple></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+            @section Scripts{
+                <script>
+                    $(document).ready(function () {
+                        $('.custom-file-input').on("change", function () {
+                            var fileName = $(this).val().split("\\").pop();
+                            $(this).next('.custom-file-label').html(fileName);
+                        });
+                    });
+                </script>
+
+            }
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-primary">Volver a lista</a>
 </div>
 
 </body>

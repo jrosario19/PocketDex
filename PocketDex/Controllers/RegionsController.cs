@@ -139,9 +139,24 @@ namespace PocketDex.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var region = await _context.Region.FindAsync(id);
-            _context.Region.Remove(region);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Region.Remove(region);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+
+             
+                ViewBag.ErrorTitle = $"{region.Name} región esta en uso";
+                ViewBag.ErrorMessage = $"{region.Name} región no puede ser eliminado puesto que esta vinculado con otras entidades" +
+                    $". Si quiere eliminarlo favor elimine los elementos relacionados con esta región y luego trate de eliminarlo" +
+                    $".";
+                return View("Error1");
+
+            }
+
         }
 
         private bool RegionExists(int id)

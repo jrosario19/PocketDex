@@ -1,7 +1,8 @@
 ﻿@model IEnumerable<PocketDex.Models.Pokemon>
 
 @{
-//Layout = null;
+    //Layout = null;
+    List<Types> typesVB = ViewBag.TypesVB;
 }
 
 <!DOCTYPE html>
@@ -9,11 +10,11 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
+    <title>Lista</title>
 </head>
 <body>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">Crear nuevo</a>
 </p>
 <table class="table">
     <thead>
@@ -21,7 +22,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.Description)
             </th>
             <th>
@@ -35,6 +36,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.PhotoPath)
+            </th>*@
+            <th>
+                @Html.DisplayNameFor(model => model.PokemonType)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Region)
@@ -44,11 +48,11 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="@item.Region.Name">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            @*<td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
@@ -62,14 +66,28 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PhotoPath)
+            </td>*@
+        <td >
+            @foreach (var type in item.PokemonType.Join(typesVB, pt => pt.TypeId, t => t.Id, (pt, t) => new { PokemonTypes = pt, types = t }))
+            {
+            <span>
+                @Html.DisplayFor(type1 => type.PokemonTypes.Types.Name),
+            </span>
+            
+                
+               
+               
+            }
+
+
+        </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Region.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Region.ClassType)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Editar</a> |
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Detalle</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Eliminar</a>
             </td>
         </tr>
 }

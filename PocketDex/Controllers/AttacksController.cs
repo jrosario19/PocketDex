@@ -139,9 +139,21 @@ namespace PocketDex.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var attack = await _context.Attack.FindAsync(id);
-            _context.Attack.Remove(attack);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            try
+            {
+                _context.Attack.Remove(attack);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                ViewBag.ErrorTitle = $"{attack.Name} ataque esta en uso";
+                ViewBag.ErrorMessage = $"{attack.Name} ataque no puede ser eliminado puesto que esta vinculado con otras entidades" +
+                    $". Si quiere eliminarlo favor elimine los elementos relacionados con este ataque y luego trate de eliminarlo" +
+                    $".";
+                return View("Error1");
+            }
+
         }
 
         private bool AttackExists(int id)

@@ -1,7 +1,9 @@
 ﻿@model PocketDex.Models.Pokemon
 
 @{
-//Layout = null;
+    //Layout = null;
+    List<Types> TypesVB = ViewBag.TypesVB;
+    List<Attack> AttacksVB = ViewBag.AttacksVB;
 }
 
 <!DOCTYPE html>
@@ -9,61 +11,100 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Details</title>
+    <title>Detalle</title>
 </head>
 <body>
 
-<div>
+<div class="">
     <h4>Pokemon</h4>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Gender)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Gender)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Height)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Height)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Weight)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Weight)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotoPath)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotoPath)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Region)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Region.ClassType)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="row @Model.Region.Name" >
+        <div class="col-6" style="height:350px;width:auto;padding-bottom:10px">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Gender)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Gender)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Height)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Height)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Weight)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Weight)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PhotoPath)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.PhotoPath)
+                </dd>
+
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Region)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Region.ClassType)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PokemonType)
+                </dt>
+                <dd class="col-sm-10">
+                    @foreach (var type in Model.PokemonType.Join(TypesVB, pt => pt.TypeId, t => t.Id, (pt, t) => new { PokemonTypes = pt, types = t }))
+                    {
+                        <span>
+                            @Html.DisplayFor(model => type.PokemonTypes.Types.Name),
+                        </span>
+
+                    }
+
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.PokemonAttack)
+                </dt>
+                <dd class="col-sm-10">
+                    @foreach (var type in Model.PokemonAttack.Join(AttacksVB, pa => pa.AttackId, a => a.Id, (pa, t) => new { pokemonAttacks = pa, attack = t }))
+                    {
+                        <span>
+                            @Html.DisplayFor(model => type.pokemonAttacks.Attack.Name),
+                        </span>
+
+                    }
+
+                </dd>
+            </dl>
+        </div>
+        
+        <div class="col-6" style="height:350px;width:auto">
+            @{
+                var photoPath = "~/images/" + (Model.PhotoPath ?? "PokemonAnonimo.png");
+            }
+            <img class="card-img-top imageThumbnail" src="@photoPath" asp-append-version="true" style="height:350px;width:auto"/>
+        </div>
+    </div>
+    </div>
+    
+<div style="padding-top:10px">
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a> |
+    <a asp-action="Index" class="btn btn-primary">Volver a lista</a>
 </div>
 </body>
 </html>

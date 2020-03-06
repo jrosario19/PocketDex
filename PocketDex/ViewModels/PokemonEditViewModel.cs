@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using PocketDex.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace PocketDex.Models
+namespace PocketDex.ViewModels
 {
-    public partial class Pokemon
+    public class PokemonEditViewModel
     {
-        public Pokemon()
-        {
-            PokemonAttack = new HashSet<PokemonAttack>();
-            PokemonType = new HashSet<PokemonType>();
-        }
-
         public int Id { get; set; }
         [Required]
         [Display(Name = "Nombre")]
@@ -32,15 +30,18 @@ namespace PocketDex.Models
         [Display(Name = "Región")]
         public int RegionId { get; set; }
         [Required]
-        [Display(Name = "Ruta de foto")]
-        public string PhotoPath { get; set; }
+        [Display(Name = "Foto")]
+        public IFormFile PhotoPath { get; set; }
+        [Required]
+        [Display(Name = "FotoSt")]
+        public String PhotoString { get; set; }
 
         public virtual Region Region { get; set; }
         [Required]
         [Display(Name = "Ataques")]
-        public virtual ICollection<PokemonAttack> PokemonAttack { get; set; }
+        public virtual List<int> AttackIds { get; set; }
         [Required]
         [Display(Name = "Tipos")]
-        public virtual ICollection<PokemonType> PokemonType { get; set; }
+        public virtual List<int> TypesIds { get; set; }
     }
 }

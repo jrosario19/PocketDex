@@ -80,32 +80,32 @@ namespace PocketDex.Models
                 entity.HasOne(d => d.Attack)
                     .WithMany(p => p.PokemonAttack)
                     .HasForeignKey(d => d.AttackId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PokemonAttack_Attack");
 
                 entity.HasOne(d => d.Pokemon)
                     .WithMany(p => p.PokemonAttack)
                     .HasForeignKey(d => d.PokemonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PokemonAttack_Pokemon");
             });
 
             modelBuilder.Entity<PokemonType>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedNever();
+                //entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.TypeId).ValueGeneratedOnAdd();
+                //entity.Property(e => e.TypeId).ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.Pokemon)
                     .WithMany(p => p.PokemonType)
                     .HasForeignKey(d => d.PokemonId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PokemonType_Pokemon");
 
                 entity.HasOne(d => d.Types)
                     .WithMany(p => p.PokemonType)
                     .HasForeignKey(d => d.TypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("FK_PokemonType_Type");
             });
 
