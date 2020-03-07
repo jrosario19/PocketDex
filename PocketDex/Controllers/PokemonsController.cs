@@ -274,7 +274,15 @@ namespace PocketDex.Controllers
                         _context.PokemonType.Add(pokemonType);
                         //await _context.SaveChangesAsync();
                     }
-                    string uniqueFileName = ProcessUploadedFileEdit(pokemon);
+                    string uniqueFileName = "";
+                    if (pokemon.PhotoPath == null)
+                    {
+                        uniqueFileName = pokemon.PhotoString;
+                    }
+                    else
+                    {
+                        uniqueFileName = ProcessUploadedFileEdit(pokemon);
+                    }
                     Pokemon pokemonEdit = new Pokemon()
                     {
                         Id=pokemon.Id,

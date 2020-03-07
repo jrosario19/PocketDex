@@ -29,7 +29,6 @@ namespace PocketDex.ViewModels
         [Required]
         [Display(Name = "Región")]
         public int RegionId { get; set; }
-        [Required]
         [Display(Name = "Foto")]
         public IFormFile PhotoPath { get; set; }
         [Required]
